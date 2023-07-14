@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { TableComponent } from "./components/Table/Table";
+import { useDispatch } from "react-redux";
+import { getSymbols } from "./redux/slices/symbols";
+import { AppDispatch } from "./redux/store";
+import { Routes, Route } from "react-router-dom";
+import { Layout } from "./components/Layout";
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(getSymbols());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="favorite" element={<TableComponent />}></Route>
+        <Route path="table" element={<TableComponent />}></Route>
+      </Route>
+    </Routes>
   );
 }
 
