@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Button, Skeleton, TableCell, TableRow } from "@mui/material";
+import { Button, Skeleton, TableCell } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useFetchSymbol } from "../../hooks/fetchSymbol.hook";

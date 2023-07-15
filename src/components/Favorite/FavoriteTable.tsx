@@ -1,16 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { changePage, rotateActiveList } from "../../redux/slices/symbols";
-import { TableItem } from "./TableItem";
-import { symbolData } from "../../services/api-service";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { DraggableStyle } from "../../types/dnd/DraggableStyle";
-import { reorder } from "../../utils/reorder";
-import { TableHeadComponent } from "./TableHeadComponent";
+import React, { useState } from "react";
 import {
-  Button,
-  ButtonGroup,
   Paper,
   Stack,
   Table,
@@ -18,30 +7,31 @@ import {
   TableContainer,
   TableRow,
 } from "@mui/material";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { reorder } from "../../utils/reorder";
+import FavoriteStorageService from "../../services/favorite-storage-service";
+import { DraggableStyle } from "../../types/dnd/DraggableStyle";
+import { TableItem } from "../Table/TableItem";
+import { TableHeadComponent } from "../Table/TableHeadComponent";
 
-export const TableComponent = () => {
-  const [page, setPage] = useState(1);
-  const dispatch = useDispatch<AppDispatch>();
-  let activeSymbols: { symbol: string }[] | symbolData[] = useSelector(
-    (state: RootState) => state.symbolsSlice.activeSymbolsList
-  );
-
-  useEffect(() => {
-    dispatch(changePage(page));
-  }, [page]);
+export const FavoriteTable = () => {
+  const [acviveFavoriteSymbols, setAcviveFavoriteSymbols] = useState<
+    { symbol: string }[]
+  >(FavoriteStorageService.getFavoriteSymbolsInObj());
 
   function onDragEnd(result: any) {
-    if (!result.destination) {
+    if (!result.destination || !acviveFavoriteSymbols) {
       return;
     }
 
     const items = reorder(
-      activeSymbols,
+      acviveFavoriteSymbols,
       result.source.index,
       result.destination.index
     );
 
-    dispatch(rotateActiveList(items as symbolData[]));
+    setAcviveFavoriteSymbols([...items]);
+    FavoriteStorageService.saveRotatedSymbols(items as { symbol: string }[]);
   }
 
   const getItemStyle = (
@@ -71,7 +61,7 @@ export const TableComponent = () => {
               >
                 <TableHeadComponent />
                 <TableBody>
-                  {activeSymbols.map((elem, i) => {
+                  {acviveFavoriteSymbols.map((elem, i) => {
                     return (
                       <Draggable
                         key={elem.symbol}
@@ -95,10 +85,7 @@ export const TableComponent = () => {
                               provided.draggableProps.style
                             )}
                           >
-                            <TableItem
-                              symbol={elem.symbol}
-                              index={page * 10 - 10 + i + 1}
-                            />
+                            <TableItem symbol={elem.symbol} index={i + 1} />
                           </TableRow>
                         )}
                       </Draggable>
@@ -111,18 +98,6 @@ export const TableComponent = () => {
           </Droppable>
         </TableContainer>
       </DragDropContext>
-      <ButtonGroup disableElevation variant="contained">
-        <Button
-          variant="outlined"
-          onClick={() => setPage(page - 1)}
-          disabled={page === 1}
-        >
-          Назад
-        </Button>
-        <Button variant="contained" onClick={() => setPage(page + 1)}>
-          Вперед
-        </Button>
-      </ButtonGroup>
     </Stack>
   );
 };

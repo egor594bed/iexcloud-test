@@ -1,6 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService, { symbolData } from "../../services/api-service";
-import FavoriteStorageService from "../../services/favorite-storage-service";
 
 interface ISymbolsSlice {
   symbolsList: symbolData[] | [];
@@ -36,10 +35,6 @@ export const symbolsSlice = createSlice({
     rotateActiveList: (state, action: PayloadAction<symbolData[]>) => {
       state.activeSymbolsList = [...action.payload];
     },
-    swapToFavorite(state) {
-      state.activeSymbolsList =
-        FavoriteStorageService.getFavoriteSymbolsInObj() as symbolData[];
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(getSymbols.pending, (state) => {
@@ -60,7 +55,6 @@ export const symbolsSlice = createSlice({
   },
 });
 
-export const { changePage, rotateActiveList, swapToFavorite } =
-  symbolsSlice.actions;
+export const { changePage, rotateActiveList } = symbolsSlice.actions;
 
 export default symbolsSlice.reducer;

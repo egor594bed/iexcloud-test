@@ -5,6 +5,7 @@ import { getSymbols } from "./redux/slices/symbols";
 import { AppDispatch } from "./redux/store";
 import { Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
+import { FavoriteTable } from "./components/Favorite/FavoriteTable";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,8 +16,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="favorite" element={<TableComponent />}></Route>
         <Route path="table" element={<TableComponent />}></Route>
+        <Route path="favorite" element={<FavoriteTable />}></Route>
       </Route>
     </Routes>
   );

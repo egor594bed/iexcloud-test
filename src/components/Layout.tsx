@@ -7,7 +7,7 @@ import { Header } from "./Header/Header";
 export const Layout = () => {
   return (
     <>
-      <Header></Header>
+      <Header />
       <Stack direction="row" spacing={2} width={"100%"}>
         <SideBar />
         <Outlet />

@@ -9,7 +9,7 @@ class FavoriteService {
     if (favoritsArr.includes(symbol)) {
       this.removeFavoriteSymbol(symbol);
     } else {
-      this.addFavoriteId(symbol);
+      this.addFavoriteSymbol(symbol);
     }
   }
 
@@ -53,7 +53,7 @@ class FavoriteService {
     this.saveFavoriteSymbols(newfavoritsArr);
   }
 
-  private addFavoriteId(symbol: string) {
+  private addFavoriteSymbol(symbol: string) {
     let favoritsArr = this.getFavoriteSymbols();
 
     favoritsArr.push(symbol);
